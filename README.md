@@ -1,5 +1,7 @@
 # postech-execucao-service
 
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=postech4_postech-execucao-service&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=postech4_postech-execucao-service) [![Cobertura](https://sonarcloud.io/api/project_badges/measure?project=postech4_postech-execucao-service&metric=coverage)](https://sonarcloud.io/summary/new_code?id=postech4_postech-execucao-service) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=postech4_postech-execucao-service&metric=bugs)](https://sonarcloud.io/summary/new_code?id=postech4_postech-execucao-service) [![Vulnerabilidades](https://sonarcloud.io/api/project_badges/measure?project=postech4_postech-execucao-service&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=postech4_postech-execucao-service) [![CI/CD](https://github.com/Gustavollier/postech-execucao-service/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Gustavollier/postech-execucao-service/actions/workflows/ci-cd.yml)
+
 Microsserviço de **Execução e Produção** do Tech Challenge Fase 4 (FIAP 13SOAT).
 
 Dono da fila da oficina, do diagnóstico, do catálogo de peças e do estoque.

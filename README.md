@@ -6,6 +6,9 @@ Microsserviço de **Execução e Produção** do Tech Challenge Fase 4 (FIAP 13S
 
 Dono da fila da oficina, do diagnóstico, do catálogo de peças e do estoque.
 
+
+> Visão de conjunto dos quatro serviços, com o diagrama da arquitetura e da saga: [`docs/arquitetura.md`](docs/arquitetura.md).
+
 ## O que este serviço faz
 
 | Responsabilidade | Detalhe |

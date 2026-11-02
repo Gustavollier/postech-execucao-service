@@ -119,7 +119,7 @@ jobs:
         run: |
           dotnet tool install --global dotnet-sonarscanner
           dotnet sonarscanner begin \
-            /k:"Gustavollier_postech-execucao-service" \
+            /k:"postech4_postech-execucao-service" \
             /o:"postech4" \
             /d:sonar.token="$SONAR_TOKEN" \
             /d:sonar.host.url="https://sonarcloud.io"

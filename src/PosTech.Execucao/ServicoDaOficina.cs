@@ -48,6 +48,9 @@ public sealed class ServicoDaOficina
     private readonly IPecaRepositorio _pecas;
     private readonly Func<DateTime> _agora;
 
+    /// <summary>Itens por diagnóstico. Uma ordem de oficina real não chega perto.</summary>
+    public const int MaximoDeItens = 100;
+
     public ServicoDaOficina(IOrdemRepositorio ordens, IPecaRepositorio pecas, Func<DateTime>? agora = null)
     {
         _ordens = ordens;
@@ -227,7 +230,14 @@ public sealed class ServicoDaOficina
     private async Task<List<ItemLancado>> FecharPrecosAsync(
         IReadOnlyList<ItemPedido> pedidos, CancellationToken cancellationToken)
     {
-        var itens = new List<ItemLancado>(pedidos.Count);
+        // Limite antes de qualquer alocação ou consulta: a lista vem do corpo
+        // da requisição, e sem teto um pedido com milhões de itens viraria
+        // milhões de leituras de peça e uma alocação do tamanho que o
+        // chamador quiser.
+        if (pedidos.Count > MaximoDeItens)
+            throw new ArgumentException($"Um diagnóstico tem no máximo {MaximoDeItens} itens.", nameof(pedidos));
+
+        var itens = new List<ItemLancado>();
 
         foreach (var pedido in pedidos)
         {

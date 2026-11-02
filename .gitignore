@@ -7,3 +7,6 @@ appsettings.Development.json
 
 # Relatórios de cobertura gerados localmente
 cobertura/
+
+# Cobertura gerada para o SonarCloud
+cobertura-sonar/

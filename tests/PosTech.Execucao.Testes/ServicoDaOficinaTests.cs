@@ -141,6 +141,23 @@ public class ServicoDaOficinaTests
     }
 
     [Fact]
+    public async Task Diagnostico_com_itens_demais_e_recusado_antes_de_consultar_pecas()
+    {
+        // A lista vem do corpo da requisição. Sem teto, um pedido gigante
+        // viraria uma leitura de peça por item (S6639 no SonarCloud).
+        await _oficina.ReceberAsync(Aberta(16));
+
+        var demais = Enumerable.Range(0, ServicoDaOficina.MaximoDeItens + 1)
+            .Select(_ => PecaPedida("nao-existe", 1))
+            .ToList();
+
+        // ArgumentException e não PecaNaoEncontrada: a recusa vem antes de
+        // olhar qualquer peça.
+        var erro = await Assert.ThrowsAsync<ArgumentException>(() => _oficina.DiagnosticarAsync(16, demais, "corr-16"));
+        Assert.Contains(ServicoDaOficina.MaximoDeItens.ToString(), erro.Message);
+    }
+
+    [Fact]
     public async Task Diagnosticar_ordem_que_nao_esta_na_fila_diz_qual()
     {
         var erro = await Assert.ThrowsAsync<OrdemNaoEncontradaException>(

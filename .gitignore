@@ -1,0 +1,9 @@
+bin/
+obj/
+*.user
+.vs/
+.idea/
+appsettings.Development.json
+
+# Relatórios de cobertura gerados localmente
+cobertura/

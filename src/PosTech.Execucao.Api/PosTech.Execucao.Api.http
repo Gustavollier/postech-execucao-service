@@ -1,0 +1,42 @@
+# Roteiro do fluxo da oficina. A ordem entra pela fila (OrdemAberta, publicado
+# pelo OS Service); daqui para frente é o que o mecânico faz.
+
+@host = http://localhost:5042
+@correlationId = demo-0001
+
+### Cadastrar uma peça
+POST {{host}}/api/v1/pecas
+Content-Type: application/json
+
+{ "nome": "Filtro de óleo", "marca": "Bosch", "codigo": "FO-123", "preco": 38.90, "quantidadeEmEstoque": 10 }
+
+### Catálogo
+GET {{host}}/api/v1/pecas
+
+### Entrada de estoque
+POST {{host}}/api/v1/pecas/{{idPeca}}/entrada
+Content-Type: application/json
+
+{ "quantidade": 5 }
+
+### A fila da oficina
+GET {{host}}/api/v1/execucao/fila
+
+### Uma ordem
+GET {{host}}/api/v1/execucao/ordens/1
+
+### Diagnóstico: reserva as peças e publica DiagnosticoConcluido
+POST {{host}}/api/v1/execucao/ordens/1/diagnostico
+Content-Type: application/json
+X-Correlation-ID: {{correlationId}}
+
+{
+  "itens": [
+    { "descricao": "Troca de óleo", "tipo": "MaoDeObra", "quantidade": 1, "valorUnitario": 120.50 },
+    { "tipo": "Peca", "idPeca": "{{idPeca}}", "quantidade": 2 }
+  ]
+}
+
+### Finalizar: baixa as peças e publica ExecucaoFinalizada
+POST {{host}}/api/v1/execucao/ordens/1/finalizar
+X-Correlation-ID: {{correlationId}}

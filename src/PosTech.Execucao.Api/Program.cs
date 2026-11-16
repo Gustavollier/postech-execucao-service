@@ -66,7 +66,10 @@ app.UseSwaggerUI();
 
 app.MapControllers();
 app.MapHealthChecks("/health");
-app.MapGet("/health/ready", () => Results.Ok(new { status = "pronto" }));
+// O nome do serviço na resposta: pelo gateway os quatro serviços respondem em
+// rotas irmãs (/os, /billing, /execucao, /identidade), e assim dá para ver de
+// fora qual deles atendeu.
+app.MapGet("/health/ready", () => Results.Ok(new { status = "pronto", servico = "execucao-service" }));
 
 app.Run();
 

@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
+using PosTech.Seguranca;
+
 namespace PosTech.Execucao.Api.Controllers;
 
 public sealed record CadastrarPecaRequest(
@@ -21,6 +23,7 @@ public sealed record EntradaDeEstoqueRequest(int Quantidade);
 /// </summary>
 [ApiController]
 [Route("api/v1/pecas")]
+[Exige(Perfil.Equipe)]
 public sealed class PecasController : ControllerBase
 {
     private readonly IPecaRepositorio _pecas;

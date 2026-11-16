@@ -132,6 +132,14 @@ As falhas de negócio têm status próprio, traduzidas num lugar só (`TradutorD
 | Transição inválida (diagnosticar duas vezes, finalizar sem pagamento) | 409 |
 | Outra gravação chegou primeiro | 409 |
 
+## Quem pode o quê
+
+O gateway valida o token; o serviço decide o que cada perfil alcança, lendo `role` e `ClienteId` do JWT repassado (`src/PosTech.Execucao.Api/Acesso.cs`).
+
+Fila, diagnóstico, finalização e estoque são da equipe, em qualquer cargo. O cliente alcança uma rota só: `GET /execucao/ordens/{id}`, e apenas da própria ordem — a de outro responde 404.
+
+Sem token, 401. `/health` continua público.
+
 ## Rodar local
 
 ```bash

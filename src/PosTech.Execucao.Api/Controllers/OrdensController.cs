@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using PosTech.Contratos;
 
+using PosTech.Seguranca;
+
 namespace PosTech.Execucao.Api.Controllers;
 
 public sealed record ItemDoDiagnosticoRequest(
@@ -21,6 +23,7 @@ public sealed record DiagnosticoRequest(IReadOnlyList<ItemDoDiagnosticoRequest>?
 /// </summary>
 [ApiController]
 [Route("api/v1/execucao")]
+[Exige(Perfil.Equipe)]
 public sealed class OrdensController : ControllerBase
 {
     private readonly IOrdemRepositorio _ordens;
@@ -47,13 +50,18 @@ public sealed class OrdensController : ControllerBase
     }
 
     [HttpGet("ordens/{idOrdem:int}")]
+    [Exige(Perfil.Autenticado)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> PorOrdem(int idOrdem, CancellationToken cancellationToken)
     {
         var ordem = await _ordens.ObterPorOrdemAsync(idOrdem, cancellationToken);
 
-        return ordem is null ? NotFound() : Ok(Mapear(ordem));
+        // A única rota daqui que o cliente alcança, e só para a ordem dele.
+        if (ordem is null || !QuemChama.De(HttpContext).PodeVerDadosDoCliente(ordem.IdCliente))
+            return NotFound();
+
+        return Ok(Mapear(ordem));
     }
 
     /// <summary>
